@@ -65,10 +65,8 @@ int main()
    boot = (unsigned char*) malloc(BYTES_PER_SECTOR * sizeof(unsigned char));
 
    if (read_sector(0, boot) == -1)
-   {
+
       printf("Something has gone wrong -- could not read the boot sector\n");
-	  gets(NULL);
-   }
 
  
    // 12 (not 11) because little endian

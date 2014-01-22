@@ -1,0 +1,1 @@
+bool checkInRange(int x, int min, int max);

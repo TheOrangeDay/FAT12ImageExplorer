@@ -11,3 +11,11 @@
 *.lai
 *.la
 *.a
+
+*.suo
+*.sdf
+*.opensdf
+
+*/ipch
+*/Debug
+*/Release

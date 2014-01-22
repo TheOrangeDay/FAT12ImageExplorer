@@ -48,11 +48,12 @@ int main()
    //      FILE_SYSTEM_ID         BYTES_PER_SECTOR
 
    // Use this for an image of a floppy drive
-   FILE_SYSTEM_ID = fopen("img/floppy1", "r+");
+   FILE_SYSTEM_ID = fopen("../img/floppy1", "r+");
 
    if (FILE_SYSTEM_ID == NULL)
    {
       printf("Could not open the floppy drive or image.\n");
+	  gets(NULL);
       exit(1);
    }
 
@@ -64,7 +65,10 @@ int main()
    boot = (unsigned char*) malloc(BYTES_PER_SECTOR * sizeof(unsigned char));
 
    if (read_sector(0, boot) == -1)
+   {
       printf("Something has gone wrong -- could not read the boot sector\n");
+	  gets(NULL);
+   }
 
  
    // 12 (not 11) because little endian
@@ -73,6 +77,8 @@ int main()
    bytesPerSector = mostSignificantBits | leastSignificantBits;
 	
    printf("%d\n", bytesPerSector);
+
+   gets(NULL);
 
    return 0;
 }

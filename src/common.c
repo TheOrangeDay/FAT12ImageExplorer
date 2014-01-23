@@ -1,6 +1,25 @@
+#include "common.h"
+
 /* This will return true if in range, false if out of range
  */
-bool checkInRange(int x, int min, int max)
+boolean checkInRange(int x, int min, int max)
 {
-	return (x > min && x <= max);
+	boolean passed = false;
+	if((x > min && x <= max))
+	{
+		passed = true;
+	}
+
+	return passed;
+}
+
+boolean checkRange(int x, int y)
+{
+	boolean passed = false;
+	if(x <= y && x <= 2)
+	{
+		passed = true;
+	}
+
+	return passed;
 }

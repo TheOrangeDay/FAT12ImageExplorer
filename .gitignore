@@ -19,3 +19,7 @@
 */ipch
 */Debug
 */Release
+
+*ipch
+*Debug
+*Release

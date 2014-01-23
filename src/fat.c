@@ -6,6 +6,10 @@
  *****************************************************************************/
 
 #include <stdio.h>
+#include <string.h>
+#include "fatSupport.h"
+#include "common.h"
+#include "pfe.h"
 
 // 13 is NOT the correct number -- you fix it!
 #define BYTES_TO_READ_IN_BOOT_SECTOR 13
@@ -37,12 +41,13 @@ int main()
    int mostSignificantBits;
    int leastSignificantBits;
    int bytesPerSector;
+   char garbage[64];
 
    // You must set two global variables for the disk access functions:
    //      FILE_SYSTEM_ID         BYTES_PER_SECTOR
 
    // Use this for an image of a floppy drive
-   FILE_SYSTEM_ID = fopen("../img/floppy1", "r+");
+   FILE_SYSTEM_ID = fopen("img/floppy1", "r+");
 
    if (FILE_SYSTEM_ID == NULL)
    {
@@ -70,7 +75,7 @@ int main()
 	
    printf("%d\n", bytesPerSector);
 
-   gets(NULL);
+   gets(garbage);
 
    return 0;
 }

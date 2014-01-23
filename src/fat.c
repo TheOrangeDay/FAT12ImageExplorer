@@ -26,12 +26,6 @@
 FILE* FILE_SYSTEM_ID;
 int BYTES_PER_SECTOR;
 
-extern int read_sector(int sector_number, char* buffer);
-extern int write_sector(int sector_number, char* buffer);
-
-extern int  get_fat_entry(int fat_entry_number, char* fat);
-extern void set_fat_entry(int fat_entry_number, int value, char* fat);
-
 /******************************************************************************
  * main: an example of reading an item in the boot sector
  *****************************************************************************/

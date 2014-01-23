@@ -12,7 +12,7 @@
 #include "pfe.h"
 
 // 13 is NOT the correct number -- you fix it!
-#define BYTES_TO_READ_IN_BOOT_SECTOR 13
+#define BYTES_TO_READ_IN_BOOT_SECTOR 62
 
 /******************************************************************************
  * You must set these global variables:
@@ -74,6 +74,10 @@ int main()
    bytesPerSector = mostSignificantBits | leastSignificantBits;
 	
    printf("%d\n", bytesPerSector);
+
+   BYTES_PER_SECTOR = bytesPerSector;
+
+   pfe(2, 8);
 
    gets(garbage);
 

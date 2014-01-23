@@ -177,3 +177,8 @@ void set_fat_entry(int fat_entry_number, int value, unsigned char* fat)
                                           0x00f0)  |  (a >> 8));
    }
 }
+
+void readFAT12Table( int table, unsigned char* fat )
+{
+	read_sector(table + 1, &fat[table * BYTES_PER_SECTOR]);
+}

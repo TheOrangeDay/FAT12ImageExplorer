@@ -27,8 +27,8 @@
  *    set_fat_entry
  *****************************************************************************/
 
-FILE* FILE_SYSTEM_ID;
-int BYTES_PER_SECTOR;
+extern FILE* FILE_SYSTEM_ID;
+extern int BYTES_PER_SECTOR;
 
 /******************************************************************************
  * main: an example of reading an item in the boot sector

@@ -10,6 +10,7 @@
 #include "fatSupport.h"
 #include "common.h"
 #include "pfe.h"
+#include "pbs.h"
 
 // 13 is NOT the correct number -- you fix it!
 #define BYTES_TO_READ_IN_BOOT_SECTOR 62
@@ -77,7 +78,10 @@ int main()
 
    BYTES_PER_SECTOR = bytesPerSector;
 
-   pfe(2, 8);
+   //pfe(2, 8);
+
+   readBootSector();
+   printBootSector();
 
    gets(garbage);
 

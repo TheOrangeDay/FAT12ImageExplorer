@@ -30,6 +30,9 @@
     <ClCompile Include="src\pbs.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pbs_main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common.h">

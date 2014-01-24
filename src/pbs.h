@@ -18,4 +18,7 @@ struct FATAttributes
 	unsigned char FileSystemType[8];
 };
 
+void readBootSector(void);
+void printBootSector(void);
+
 #endif

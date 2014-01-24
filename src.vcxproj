@@ -61,6 +61,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="pbs_main.c" />
     <ClCompile Include="src\common.c" />
     <ClCompile Include="src\fat.c" />
     <ClCompile Include="src\fatSupport.c" />

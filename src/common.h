@@ -1,7 +1,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-typedef int boolean;
+typedef char boolean;
 #define true  1
 #define false 0
 

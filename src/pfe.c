@@ -27,7 +27,7 @@ void pfe(int x, int y)
 	for(i = x + 1; i <= y; i++)
 	{
 		result = get_fat_entry(i, buffer);
-		printf("Entry %d: %d\n", i, result);
+		printf("Entry %d: %X\n", i, result);
 	}
 
 	

@@ -27,7 +27,7 @@
     <ClCompile Include="src\pfe.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pbs.c">
+    <ClCompile Include="src\pbs.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClInclude Include="src\pfe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pbs.h">
+    <ClInclude Include="src\pbs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

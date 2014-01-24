@@ -61,16 +61,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="pbs.c" />
     <ClCompile Include="src\common.c" />
     <ClCompile Include="src\fat.c" />
     <ClCompile Include="src\fatSupport.c" />
+    <ClCompile Include="src\pbs.c" />
     <ClCompile Include="src\pfe.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pbs.h" />
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\fatSupport.h" />
+    <ClInclude Include="src\pbs.h" />
     <ClInclude Include="src\pfe.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

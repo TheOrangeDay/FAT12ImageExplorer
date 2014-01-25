@@ -76,7 +76,7 @@ int main()
 	
    printf("%d\n", bytesPerSector);
 
-   BYTES_PER_SECTOR = bytesPerSector;
+  // BYTES_PER_SECTOR = bytesPerSector;
 
    //pfe(2, 8);
 

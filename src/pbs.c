@@ -22,34 +22,36 @@ void readBootSector(void)
 
 	bytesRead = read_sector(0, bootSector);
 
-	memcpy(BOOT_SECTOR_ATTRIBUTES.BytesPerSector, bootSector+11, 2);
-	memcpy(BOOT_SECTOR_ATTRIBUTES.SectorsPerCluster, bootSector+13, 1);
-	memcpy(BOOT_SECTOR_ATTRIBUTES.NumberOfReservedSectors, bootSector+14, 2);
-	memcpy(BOOT_SECTOR_ATTRIBUTES.NumberOfFAT, bootSector+16, 1);
-	memcpy(BOOT_SECTOR_ATTRIBUTES.NumberOfRootEntries, bootSector+17, 2);
-	memcpy(BOOT_SECTOR_ATTRIBUTES.TotalSectorCount, bootSector+19, 2);
-	memcpy(BOOT_SECTOR_ATTRIBUTES.SectorsPerFat, bootSector+22, 2);
-	memcpy(BOOT_SECTOR_ATTRIBUTES.SectorsPerTrack, bootSector+24, 2);
-	memcpy(BOOT_SECTOR_ATTRIBUTES.NumberOfHeads, bootSector+26, 2);
-	memcpy(BOOT_SECTOR_ATTRIBUTES.BootSignature, bootSector+38, 1);
-	memcpy(BOOT_SECTOR_ATTRIBUTES.VolumeID, bootSector+39, 4);
+	BOOT_SECTOR_ATTRIBUTES.BytesPerSector = bootSector[12] << 8 | bootSector[11];
+	BOOT_SECTOR_ATTRIBUTES.SectorsPerCluster = bootSector[14] << 4 | bootSector [13];
+	BOOT_SECTOR_ATTRIBUTES.NumberOfReservedSectors = bootSector[15] << 8 | bootSector[14];
+	BOOT_SECTOR_ATTRIBUTES.NumberOfFAT = bootSector[17] << 4 | bootSector[16];
+	BOOT_SECTOR_ATTRIBUTES.NumberOfRootEntries = bootSector[18] << 8 | bootSector[17];
+	BOOT_SECTOR_ATTRIBUTES.TotalSectorCount = bootSector[20] << 8 | bootSector[19];
+	BOOT_SECTOR_ATTRIBUTES.SectorsPerFat = bootSector[23] << 8 | bootSector[22];
+	BOOT_SECTOR_ATTRIBUTES.SectorsPerTrack = bootSector[25] << 8 | bootSector[24];
+	BOOT_SECTOR_ATTRIBUTES.NumberOfHeads = bootSector[27] << 8 | bootSector[26];
+	BOOT_SECTOR_ATTRIBUTES.BootSignature = bootSector[39] << 4 | bootSector[38];
+	BOOT_SECTOR_ATTRIBUTES.VolumeID = bootSector[40] << 16 | bootSector[39];
+
 	memcpy(BOOT_SECTOR_ATTRIBUTES.volumeLabel, bootSector+43, 11);
+	BOOT_SECTOR_ATTRIBUTES.volumeLabel[12] = (const char)"\0";
 	memcpy(BOOT_SECTOR_ATTRIBUTES.FileSystemType, bootSector+54, 8);
 }
 
 void printBootSector(void)
 {
-	printf("%s%d\n", "Bytes per sector: ", (int)BOOT_SECTOR_ATTRIBUTES.BytesPerSector);
-	printf("%d\n", BOOT_SECTOR_ATTRIBUTES.SectorsPerCluster);
-	printf("%d\n", BOOT_SECTOR_ATTRIBUTES.NumberOfReservedSectors);
-	printf("%d\n", BOOT_SECTOR_ATTRIBUTES.NumberOfFAT);
-	printf("%d\n", BOOT_SECTOR_ATTRIBUTES.NumberOfRootEntries);
-	printf("%d\n", BOOT_SECTOR_ATTRIBUTES.TotalSectorCount);
-	printf("%d\n", BOOT_SECTOR_ATTRIBUTES.SectorsPerFat);
-	printf("%d\n", BOOT_SECTOR_ATTRIBUTES.SectorsPerTrack);
-	printf("%d\n", BOOT_SECTOR_ATTRIBUTES.NumberOfHeads);
-	printf("0x%x\n", BOOT_SECTOR_ATTRIBUTES.BootSignature);
-	printf("0x%x\n", BOOT_SECTOR_ATTRIBUTES.VolumeID);
-	printf("%s\n", BOOT_SECTOR_ATTRIBUTES.volumeLabel);
-	printf("%s\n", BOOT_SECTOR_ATTRIBUTES.FileSystemType);
+	printf("%s%d\n", "Bytes per sector: ", BOOT_SECTOR_ATTRIBUTES.BytesPerSector);
+	printf("%s%d\n", "Sectors per Cluster: ", BOOT_SECTOR_ATTRIBUTES.SectorsPerCluster);
+	printf("%s%d\n", "Number of reserved Sectors: ", BOOT_SECTOR_ATTRIBUTES.NumberOfReservedSectors);
+	printf("%s%d\n", "Number of FATs: ", BOOT_SECTOR_ATTRIBUTES.NumberOfFAT);
+	printf("%s%d\n", "Number of root entries: ", BOOT_SECTOR_ATTRIBUTES.NumberOfRootEntries);
+	printf("%s%d\n", "Total sector counts: ", BOOT_SECTOR_ATTRIBUTES.TotalSectorCount);
+	printf("%s%d\n", "Sectors per FAT: ", BOOT_SECTOR_ATTRIBUTES.SectorsPerFat);
+	printf("%s%d\n", "Sectors per track: ", BOOT_SECTOR_ATTRIBUTES.SectorsPerTrack);
+	printf("%s%d\n", "Number of heads: ", BOOT_SECTOR_ATTRIBUTES.NumberOfHeads);
+	printf("%s0x%x\n", "Boot signature: ", BOOT_SECTOR_ATTRIBUTES.BootSignature);
+	printf("%s0x%x\n", "VolumeID: ", BOOT_SECTOR_ATTRIBUTES.VolumeID);
+	printf("%s%s\n",  "Volume Label :", BOOT_SECTOR_ATTRIBUTES.volumeLabel);
+	printf("%s%s\n", "File system type: ", BOOT_SECTOR_ATTRIBUTES.FileSystemType);
 }

@@ -1,6 +1,8 @@
 #ifndef PBS_H
 #define PBS_H
 
+FATAttributes BOOT_SECTOR_ATTRIBUTES;
+
 typedef struct 
 {
 	int BytesPerSector;

@@ -1,12 +1,10 @@
 #include "pbs.h"
 
-FATAttributes BOOT_SECTOR_ATTRIBUTES;
-
-/*int main()
+int main()
 {
 	readBootSector();
 
 	printBootSector();
 
 	return 0;
-}*/
+}

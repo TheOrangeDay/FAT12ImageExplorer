@@ -48,14 +48,7 @@ int main()
    //      FILE_SYSTEM_ID         BYTES_PER_SECTOR
 
    // Use this for an image of a floppy drive
-   FILE_SYSTEM_ID = fopen("img/floppy1", "r+");
-
-   if (FILE_SYSTEM_ID == NULL)
-   {
-      printf("Could not open the floppy drive or image.\n");
-	  gets(NULL);
-      exit(1);
-   }
+   FILE_SYSTEM_ID = loadFloppyImage("img/floppy1");
 
    // Set it to this only to read the boot sector
    BYTES_PER_SECTOR = BYTES_TO_READ_IN_BOOT_SECTOR;
@@ -73,10 +66,8 @@ int main()
    mostSignificantBits  = ( ( (int) boot[12] ) << 8 ) & 0x0000ff00;
    leastSignificantBits =   ( (int) boot[11] )        & 0x000000ff;
    bytesPerSector = mostSignificantBits | leastSignificantBits;
-	
-   printf("%d\n", bytesPerSector);
 
-  // BYTES_PER_SECTOR = bytesPerSector;
+   BYTES_PER_SECTOR = bytesPerSector;
 
    //pfe(2, 8);
 

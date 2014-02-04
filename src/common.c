@@ -23,3 +23,17 @@ boolean checkRange(int x, int y)
 
 	return passed;
 }
+
+FILE* loadFloppyImage( char* location )
+{
+	FILE* file = fopen(location, "r+");
+
+	if (file == NULL)
+	{
+		printf("Could not open the image.\n");
+		gets(NULL);
+		exit(1);
+	}
+
+	return file;
+}

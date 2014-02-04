@@ -67,6 +67,7 @@
     <ClCompile Include="src\pbs.c" />
     <ClCompile Include="src\pbs_main.c" />
     <ClCompile Include="src\pfe.c" />
+    <ClCompile Include="src\pfe_main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common.h" />

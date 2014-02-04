@@ -2,6 +2,8 @@
 #define COMMON_H
 
 #include <stdio.h>
+#include "fatSupport.h"
+#include "pbs.h"
 
 typedef char boolean;
 #define true  1
@@ -10,6 +12,6 @@ typedef char boolean;
 boolean checkInRange(int x, int min, int max);
 boolean checkRange(int x, int y);
 
-FILE* loadFloppyImage(char* location);
+void loadFloppyImage(char* location);
 
 #endif

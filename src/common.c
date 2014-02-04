@@ -1,7 +1,8 @@
 #include "common.h"
 
-/* This will return true if in range, false if out of range
- */
+extern FILE* FILE_SYSTEM_ID;
+
+// This will return true if in range, false if out of range
 boolean checkInRange(int x, int min, int max)
 {
 	boolean passed = false;
@@ -24,7 +25,7 @@ boolean checkRange(int x, int y)
 	return passed;
 }
 
-FILE* loadFloppyImage( char* location )
+void loadFloppyImage( char* location )
 {
 	FILE* file = fopen(location, "r+");
 
@@ -35,5 +36,6 @@ FILE* loadFloppyImage( char* location )
 		exit(1);
 	}
 
-	return file;
+	FILE_SYSTEM_ID = file;
+	readBootSector();
 }

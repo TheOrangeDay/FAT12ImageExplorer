@@ -12,13 +12,40 @@
 /* Written by: Daniel Houghton
 /************************************************************************/
 
+// 13 is NOT the correct number -- you fix it!
+#define BYTES_TO_READ_IN_BOOT_SECTOR 62
+
 extern FATAttributes BOOT_SECTOR_ATTRIBUTES;
 extern int BYTES_PER_SECTOR;
 
 void readBootSector(void)
 {
-	unsigned char* bootSector = (unsigned char*) malloc(BYTES_PER_SECTOR * sizeof(unsigned char));
+	unsigned char* boot;            // example buffer
+	int mostSignificantBits;
+	int leastSignificantBits;
+	int bytesPerSector;
+
+	unsigned char* bootSector;
 	int bytesRead;
+
+	// Set it to this only to read the boot sector
+	BYTES_PER_SECTOR = BYTES_TO_READ_IN_BOOT_SECTOR;
+
+	// Then reset it per the value in the boot sector
+
+	boot = (unsigned char*) malloc(BYTES_PER_SECTOR * sizeof(unsigned char));
+
+	if (read_sector(0, boot) == -1)
+	{
+		printf("Something has gone wrong -- could not read the boot sector\n");
+	}
+
+	// 12 (not 11) because little endian
+	mostSignificantBits  = ( ( (int) boot[12] ) << 8 ) & 0x0000ff00;
+	leastSignificantBits =   ( (int) boot[11] )        & 0x000000ff;
+	bytesPerSector = mostSignificantBits | leastSignificantBits;
+
+	bootSector = (unsigned char*) malloc(BYTES_PER_SECTOR * sizeof(unsigned char));
 
 	bytesRead = read_sector(0, bootSector);
 
@@ -37,6 +64,9 @@ void readBootSector(void)
 	memcpy(BOOT_SECTOR_ATTRIBUTES.volumeLabel, bootSector+43, 11);
 	BOOT_SECTOR_ATTRIBUTES.volumeLabel[12] = (const char)"\0";
 	memcpy(BOOT_SECTOR_ATTRIBUTES.FileSystemType, bootSector+54, 8);
+
+	//After allocating the appropriately sized boot sector buffer, reset to actual size
+	BYTES_PER_SECTOR = bytesPerSector;
 }
 
 void printBootSector(void)

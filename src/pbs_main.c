@@ -1,10 +1,17 @@
 #include "pbs.h"
+#include "common.h"
 
-int main()
+extern FILE* FILE_SYSTEM_ID;
+
+int main(int argc, char* argv)
 {
-	readBootSector();
+	char garbage[64];
+
+	loadFloppyImage(argv);
 
 	printBootSector();
+
+	gets(garbage);
 
 	return 0;
 }

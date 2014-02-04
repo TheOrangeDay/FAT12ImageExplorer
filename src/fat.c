@@ -12,8 +12,7 @@
 #include "pfe.h"
 #include "pbs.h"
 
-// 13 is NOT the correct number -- you fix it!
-#define BYTES_TO_READ_IN_BOOT_SECTOR 62
+
 
 /******************************************************************************
  * You must set these global variables:
@@ -35,7 +34,7 @@ extern int BYTES_PER_SECTOR;
  * main: an example of reading an item in the boot sector
  *****************************************************************************/
 
-int main()
+/*int main()
 {
    unsigned char* boot;            // example buffer
 
@@ -77,4 +76,4 @@ int main()
    gets(garbage);
 
    return 0;
-}
+}*/

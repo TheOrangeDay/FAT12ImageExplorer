@@ -1,5 +1,5 @@
 CC = gcc
-EXECUTABLE = pbs_main pfe_main
+EXECUTABLE = pfe_main pbs_main
 #Add others when they are made
 
 all: $(EXECUTABLE)

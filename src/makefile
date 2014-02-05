@@ -5,7 +5,7 @@ EXECUTABLE = pfe_main pbs_main
 all: $(EXECUTABLE)
 
 pfe_main: pfe_main.c
-	$(CC) -o pfe pfe_main.c pfe.c fatSupport.c common.c
+	$(CC) -o pfe pfe_main.c pfe.c pbs.c fatSupport.c common.c
 
 pbs_main: pbs_main.c
 	$(CC) -o pbs pbs_main.c pbs.c fatSupport.c common.c

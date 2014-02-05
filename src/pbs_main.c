@@ -3,11 +3,17 @@
 
 extern FILE* FILE_SYSTEM_ID;
 
-int main(int argc, char* argv)
+int main(int argc, char* argv[])
 {
 	char garbage[64];
 
-	loadFloppyImage(argv);
+	if(argc != 2)
+	{
+		printf("Incorrect values! Ex: %s floppy1\n", argv[0]);
+		return 1;
+	}	
+
+	loadFloppyImage(argv[1]);
 
 	printBootSector();
 

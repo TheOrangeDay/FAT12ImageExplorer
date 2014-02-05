@@ -3,16 +3,25 @@
 
 extern FILE* FILE_SYSTEM_ID;
 
-int main(int argc, char* argv)
+int main(int argc, char* argv[])
 {
-	// take in the values
 	char garbage[64];
-	int firstValue = atoi("2");
-	int secondValue = atoi("8");
+	int firstValue;
+	int secondValue;
 
-	loadFloppyImage("img/floppy1");
+	if(argc != 4)
+	{
+		printf("Incorrect values! Ex: %s floppy1 2 8\n", argv[0]);
+		return 1;
+	}
 
-	pfe(2, 8);
+	// take in the values
+	firstValue = atoi(argv[2]);
+	secondValue = atoi(argv[3]);
+
+	loadFloppyImage(argv[1]);
+
+	pfe(firstValue, secondValue);
 
 	gets(garbage);
 

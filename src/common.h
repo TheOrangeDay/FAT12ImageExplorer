@@ -2,6 +2,7 @@
 #define COMMON_H
 
 #include <stdio.h>
+#include <string.h>
 #include "fatSupport.h"
 #include "pbs.h"
 
@@ -11,6 +12,10 @@ typedef char boolean;
 
 boolean checkInRange(int x, int min, int max);
 boolean checkRange(int x, int y);
+
+boolean equal(char* first, char* second);
+int countWords(const char input[]);
+char** parse(char input[], char** output);
 
 void loadFloppyImage(char* location);
 

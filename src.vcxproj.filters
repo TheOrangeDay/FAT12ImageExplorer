@@ -18,22 +18,13 @@
     <ClCompile Include="src\common.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\fat.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\fatSupport.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\pfe.c">
+    <ClCompile Include="src\shell.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\pbs.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pbs_main.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pfe_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -42,9 +33,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\fatSupport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\pfe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\pbs.h">

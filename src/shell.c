@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
 
 			char* first = strtok(workingBuffer, " ");
 
+			//check if we want to exit
 			if(equal(first, "exit"))
 			{
 				printf("Goodbye\n");
@@ -58,8 +59,10 @@ int main(int argc, char *argv[])
 				// must add null at end
 				word_count++;
 				
+				// put all arguments into char**
 				result = parse(&buffer, result);
 				
+				// loop through current directory
 				DIR* dir;
 				struct dirent *ent;
 				int rv = 0;

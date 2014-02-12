@@ -10,6 +10,17 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\cd_main.c" />
+    <ClCompile Include="src\common.c" />
+    <ClCompile Include="src\fatSupport.c" />
+    <ClCompile Include="src\pbs.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\fatSupport.h" />
+    <ClInclude Include="src\pbs.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CA27A180-FA17-4355-A9E4-ABBE531E78CF}</ProjectGuid>
     <RootNamespace>src</RootNamespace>
@@ -60,17 +71,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\common.c" />
-    <ClCompile Include="src\pbs.c" />
-    <ClCompile Include="src\shell.c" />
-    <ClCompile Include="src\fatSupport.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\common.h" />
-    <ClInclude Include="src\fatSupport.h" />
-    <ClInclude Include="src\pbs.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

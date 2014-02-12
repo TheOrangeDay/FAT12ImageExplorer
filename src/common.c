@@ -103,3 +103,57 @@ boolean equal(char* first, char* second)
 
 	return true;
 }
+
+char* trim( char* input )
+{
+	int i=0;
+	int front = 0;
+	int endpos = 0;
+	int len = strlen(input);
+	char* newString;
+
+	endpos = len - 1;
+
+	while (isspace(input[i]))
+	{
+		front++;
+	}
+
+	while(isspace(input[endpos]))
+	{
+		endpos--;
+	}
+
+	endpos += 1;
+
+	// now we a front and endpos
+	newString = (char*)malloc((endpos - front) * sizeof(char));
+	memset(newString, 0, strlen(newString));
+	strncpy(newString, input + front, (endpos - front));
+
+	len = strlen(newString);
+	newString[len] = 0;
+
+	input = (char*)malloc((strlen(newString) + 1) * sizeof(char));
+	memset(input, 0, strlen(input));
+	strncpy(input, newString, strlen(newString));
+
+	len = strlen(input);
+	input[len] = 0;
+
+	return newString;
+
+	//input = newString;
+}
+
+void toLower( char* input )
+{
+	int i=0;
+	char c;
+	while (input[i])
+	{
+		c = input[i];
+		input[i] = tolower(c);
+		i++;
+	}
+}

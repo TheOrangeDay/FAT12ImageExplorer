@@ -15,13 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\cd_main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\common.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\fatSupport.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shell.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\pbs.c">

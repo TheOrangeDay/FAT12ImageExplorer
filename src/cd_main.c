@@ -11,42 +11,47 @@ int main(int argc, char* argv[])
 	// parse current working dir, and find location on
 	// fat table
 	char garbage[64];
-	char* name; // name of the directory
-	char* newName;
-	char* flcBuffer;
-	unsigned char* buffer;
-	int byteLocation = 19;
-	char* token;
-	char* newLocation;
-	char hello;
-	int currentDirectory = 0;
-	int maxDirectories = 16;
-	int i;
-	int flcNumber;
-	int byteOffset = 0;
 
+	char pwd[512];
+
+	char* name;		 // name of the directory
+	char* flcBuffer; // the FLC buffer
+	char* newName;   // The new name buffer
+	
+	unsigned char* buffer;    // The buffer to pull data into
+	int byteLocation = 19;    // the starting byte/sector location
+	char* token;              // working token set
+	char* newLocation;        // new location we want to cd to
+	int currentDirectory = 0; // The current directory we are checking in
+	int maxDirectories = 16;  // The max directories held per sector
+	int i;
+	int flcNumber;            // The final FLC number location
+	int byteOffset = 0;		  // Current calculated byte offset for directories
+
+	// Temp Load
 	loadFloppyImage("img/floppy2");
 
-	printf("loaded\n");
-
 	//Set temporary directory
-	strcpy(workingDirectoryName, "subdir1/");
-	newLocation = (char*) malloc(7 * sizeof(char));
+	strcpy(workingDirectoryName, "/subdir1/");
+
+	// set temp location
+	newLocation = (char*) malloc(14 * sizeof(char));
 	memset(newLocation, 0, strlen(newLocation));
-	strcpy(newLocation, "subsub");
-	newLocation[6] = 0;
+	strcpy(newLocation, "subsub/sssub1");
+	newLocation[13] = 0;
 
 	printf("PWD: %s\n", workingDirectoryName);
 
+	// push into new string to avoid editing existing var
+	strcpy(pwd, workingDirectoryName);
+
 	// validate correct slashes are used eventually
-	token = strtok(workingDirectoryName, "/");
+	token = strtok(pwd, "/");
 
 	printf("FirstToken: %s\n", token);
-	// "subdir"
 
 	while(token != NULL)
 	{
-		// find current token byte location (search for "subdir")
 		// each sector is 512, containing 16 directory entries (32 bytes long)
 		BYTES_PER_SECTOR = 512;
 		//size it up to 512
@@ -73,11 +78,12 @@ int main(int argc, char* argv[])
 		
 			printf("Begin name allocation\n");
 
-			name = (char*) malloc(8 * sizeof(char));
+			name = (char*) malloc(9 * sizeof(char));
 			memset(name, 0, strlen(name));
 			strncpy(name, buffer + byteOffset, 8);
+			name[8] = 0;
 
-			name = trim(name);
+			trimright(name);
 			toLower(name);
 		
 			printf("Name allocation success\n");
@@ -88,7 +94,7 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
-				//Reefers to root. 
+				//Refers to root. 
 				flcNumber = 0;
 			}
 			printf("FLC: %i\n", flcNumber);
@@ -96,7 +102,8 @@ int main(int argc, char* argv[])
 			if(equal(name, token))
 			{
 				//Found it! Find the FLC
-				printf("MATCH: FLC: %i\n", flcBuffer);
+				printf("MATCH: FLC: %i\n", flcNumber);
+
 				//set new byte location here
 				byteLocation = (flcNumber - 2 + 33);
 
@@ -109,12 +116,17 @@ int main(int argc, char* argv[])
 	}
 
 	printf("Done. BL = %i\n", byteLocation);
+	
+	if(strlen(newLocation) > 0 && newLocation[0] == '/')
+	{
+		// set back to root
+		byteLocation = 19;
+	}
 
-	// lets rock on, muh-fuhh uhh
+	token = strtok(newLocation, "/");
 
-	//while(token != NULL)
-	//{
-		// find current token byte location (search for "subdir")
+	while(token != NULL)
+	{
 		// each sector is 512, containing 16 directory entries (32 bytes long)
 		BYTES_PER_SECTOR = 512;
 		//size it up to 512
@@ -139,13 +151,16 @@ int main(int argc, char* argv[])
 			memset(flcBuffer, 0, strlen(flcBuffer));
 			strncpy(flcBuffer, buffer + byteOffset + 26, 2);
 
+			//get_fat_entry(
+
 			printf("Begin name allocation\n");
 
-			name = (char*) malloc(8 * sizeof(char));
+			name = (char*) malloc(9 * sizeof(char));
 			memset(name, 0, strlen(name));
 			strncpy(name, buffer + byteOffset, 8);
+			name[8] = 0;
 
-			name = trim(name);
+			trimright(name);
 			toLower(name);
 
 			printf("Name allocation success\n");
@@ -156,32 +171,34 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
-				//Reefers to root. 
+				//Refers to root. 
 				flcNumber = 0;
 			}
 			printf("FLC: %i\n", flcNumber);
 
-			if(equal(name, newLocation))
+			if(equal(name, token))
 			{
 				//Found it! Find the FLC
-				printf("MATCH: FLC: %i\n", flcBuffer);
+				printf("MATCH: FLC: %i\n", flcNumber);
+
 				//set new byte location here
 				byteLocation = (flcNumber - 2 + 33);
-				// set PWD To str8 baller mode including name
-				// 
-				strcat(workingDirectoryName, "/");
-				strcat(workingDirectoryName, name);
-				strcat(workingDirectoryName, "/");
 
+				// add to PWD the name
+				strcat(pwd, "/");
+				strcat(pwd, name);
+				
 				break;
 			}
 		}
 
 		// get next token
-		//token = strtok(NULL, "/");
-	//}
+		token = strtok(NULL, "/");
+	}
 
-	printf("new dir: %s\n", workingDirectoryName);
+	strcat(pwd, "/");
+
+	printf("new dir: %s\n", pwd);
 
 	gets(garbage);
 

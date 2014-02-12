@@ -104,7 +104,7 @@ boolean equal(char* first, char* second)
 	return true;
 }
 
-char* trim( char* input )
+void trimright( char input[] )
 {
 	int i=0;
 	int front = 0;
@@ -114,34 +114,35 @@ char* trim( char* input )
 
 	endpos = len - 1;
 
-	while (isspace(input[i]))
+	/*while (isspace(input[i]))
 	{
 		front++;
-	}
+	}*/
 
 	while(isspace(input[endpos]))
 	{
 		endpos--;
 	}
+	input[endpos + 1] = '\0';
 
-	endpos += 1;
+	//endpos += 1;
 
-	// now we a front and endpos
-	newString = (char*)malloc((endpos - front) * sizeof(char));
-	memset(newString, 0, strlen(newString));
-	strncpy(newString, input + front, (endpos - front));
+	//// now we a front and endpos
+	//newString = (char*)malloc((endpos - front) * sizeof(char));
+	//memset(newString, 0, strlen(newString));
+	//strncpy(newString, input + front, (endpos - front));
 
-	len = strlen(newString);
-	newString[len] = 0;
+	//len = strlen(newString);
+	//newString[len] = 0;
 
-	input = (char*)malloc((strlen(newString) + 1) * sizeof(char));
-	memset(input, 0, strlen(input));
-	strncpy(input, newString, strlen(newString));
+	//input = (char*)malloc((strlen(newString) + 1) * sizeof(char));
+	//memset(input, 0, strlen(input));
+	//strncpy(input, newString, strlen(newString));
 
-	len = strlen(input);
-	input[len] = 0;
+	//len = strlen(input);
+	//input[len] = 0;
 
-	return newString;
+	//return newString;
 
 	//input = newString;
 }

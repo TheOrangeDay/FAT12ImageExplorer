@@ -22,7 +22,7 @@ boolean equal(char* first, char* second);
 int countWords(const char input[]);
 char** parse(char input[], char** output);
 void toLower(char* input);
-char* trim(char* input);
+void trimright(char input[]);
 
 void loadFloppyImage(char* location);
 

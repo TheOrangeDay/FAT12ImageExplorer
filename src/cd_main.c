@@ -17,9 +17,11 @@ int main(int argc, char* argv[])
 	char* name;		 // name of the directory
 	char* flcBuffer; // the FLC buffer
 	char* newName;   // The new name buffer
-	
+
+	int mostSignificantBits;
+	int leastSignificantBits;
 	unsigned char* buffer;    // The buffer to pull data into
-	int byteLocation = 19;    // the starting byte/sector location
+	int byteLocation = 39;    // the starting byte/sector location
 	char* token;              // working token set
 	char* newLocation;        // new location we want to cd to
 	int currentDirectory = 0; // The current directory we are checking in
@@ -75,6 +77,10 @@ int main(int argc, char* argv[])
 			flcBuffer = (char*) malloc(2 * sizeof(char));
 			memset(flcBuffer, 0, strlen(flcBuffer));
 			strncpy(flcBuffer, buffer + byteOffset + 26, 2);
+
+			mostSignificantBits  = ( ( (int) flcBuffer[1] ) << 8 ) & 0x0000ff00;
+			leastSignificantBits =   ( (int) flcBuffer[0] )        & 0x000000ff;
+			flcNumber = mostSignificantBits | leastSignificantBits;
 		
 			printf("Begin name allocation\n");
 
@@ -88,7 +94,7 @@ int main(int argc, char* argv[])
 		
 			printf("Name allocation success\n");
 			printf("Name: %s\n", name);
-			if(strlen(flcBuffer) > 0)
+			/*if(strlen(flcBuffer) > 0)
 			{
 				flcNumber = flcBuffer[0];
 			}
@@ -96,7 +102,7 @@ int main(int argc, char* argv[])
 			{
 				//Refers to root. 
 				flcNumber = 0;
-			}
+			}*/
 			printf("FLC: %i\n", flcNumber);
 
 			if(equal(name, token))
@@ -151,7 +157,9 @@ int main(int argc, char* argv[])
 			memset(flcBuffer, 0, strlen(flcBuffer));
 			strncpy(flcBuffer, buffer + byteOffset + 26, 2);
 
-			//get_fat_entry(
+			mostSignificantBits  = ( ( (int) flcBuffer[1] ) << 8 ) & 0x0000ff00;
+			leastSignificantBits =   ( (int) flcBuffer[0] )        & 0x000000ff;
+			flcNumber = mostSignificantBits | leastSignificantBits;
 
 			printf("Begin name allocation\n");
 
@@ -165,7 +173,7 @@ int main(int argc, char* argv[])
 
 			printf("Name allocation success\n");
 			printf("Name: %s\n", name);
-			if(strlen(flcBuffer) > 0)
+			/*if(strlen(flcBuffer) > 0)
 			{
 				flcNumber = flcBuffer[0];
 			}
@@ -173,7 +181,7 @@ int main(int argc, char* argv[])
 			{
 				//Refers to root. 
 				flcNumber = 0;
-			}
+			}*/
 			printf("FLC: %i\n", flcNumber);
 
 			if(equal(name, token))

@@ -27,7 +27,7 @@ boolean checkRange(int x, int y)
 
 void loadFloppyImage( char* location )
 {
-	FILE* file = fopen(location, "r+");
+	FILE* file = fopen(location, "rb");
 
 	if (file == NULL)
 	{

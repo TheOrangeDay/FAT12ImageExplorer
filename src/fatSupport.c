@@ -47,11 +47,11 @@ int read_sector(int sector_number, unsigned char* buffer)
 
    bytes_read = fread(buffer, sizeof(char), BYTES_PER_SECTOR, FILE_SYSTEM_ID);
 
-   if (bytes_read != BYTES_PER_SECTOR)
+   /*if (bytes_read != BYTES_PER_SECTOR)
    {
       printf("Error reading sector %d\n", sector_number);
       return -1;
-   }
+   }*/
 
    return bytes_read;
 }

@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	int mostSignificantBits;
 	int leastSignificantBits;
 	unsigned char* buffer;    // The buffer to pull data into
-	int byteLocation = 39;    // the starting byte/sector location
+	int byteLocation = 19;    // the starting byte/sector location
 	char* token;              // working token set
 	char* newLocation;        // new location we want to cd to
 	int currentDirectory = 0; // The current directory we are checking in
@@ -30,17 +30,21 @@ int main(int argc, char* argv[])
 	int flcNumber;            // The final FLC number location
 	int byteOffset = 0;		  // Current calculated byte offset for directories
 
+	char path[] = "subdir1/subsub/sssub4"; //The path we want to navigate to
+	int pathLength = sizeof(path)/sizeof(*path); // The length of the path
+	int readSize = 0;
 	// Temp Load
 	loadFloppyImage("img/floppy2");
 
 	//Set temporary directory
-	strcpy(workingDirectoryName, "/subdir1/");
+	strcpy(workingDirectoryName, "/");
 
 	// set temp location
-	newLocation = (char*) malloc(14 * sizeof(char));
+
+	newLocation = (char*) malloc(pathLength * sizeof(char));
 	memset(newLocation, 0, strlen(newLocation));
-	strcpy(newLocation, "subsub/sssub1");
-	newLocation[13] = 0;
+	strcpy(newLocation, path);
+	newLocation[pathLength] = 0;
 
 	printf("PWD: %s\n", workingDirectoryName);
 
@@ -58,14 +62,14 @@ int main(int argc, char* argv[])
 		BYTES_PER_SECTOR = 512;
 		//size it up to 512
 		buffer = (unsigned char*) malloc(BYTES_PER_SECTOR * sizeof(unsigned char));
-		read_sector(byteLocation, buffer);
+		readSize = read_sector(byteLocation, buffer);
 		
 		for(i = 0; i < maxDirectories; i++)
 		{
 			byteOffset = i * 32;
 			
 			//check to see if we should ignore this.
-			if(buffer[byteOffset] == 0xE5 || buffer[byteOffset + 11] == 0x02)
+			if(buffer[byteOffset] == 0xE5 || buffer[byteOffset + 11] == 0x02 || byteOffset > readSize)
 			{
 				// Deleted, not good
 				printf("File Does Not Exist :(\n");

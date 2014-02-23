@@ -17,7 +17,7 @@ boolean checkInRange(int x, int min, int max)
 boolean checkRange(int x, int y)
 {
 	boolean passed = false;
-	if(x <= y && x <= 2)
+	if(x <= y && x >= 2)
 	{
 		passed = true;
 	}

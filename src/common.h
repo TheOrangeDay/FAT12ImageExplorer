@@ -13,6 +13,15 @@ typedef char boolean;
 
 #define MAXPATHSIZE 512
 
+#define  SHMKEY 2593
+#define SHMSIZE 1024
+
+typedef struct shmStruct
+{
+	char pwd[512];
+	char floppyName[256];
+} shmStruct;
+
 char workingDirectoryName[MAXPATHSIZE];
 
 boolean checkInRange(int x, int min, int max);

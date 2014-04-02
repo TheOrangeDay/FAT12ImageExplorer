@@ -6,7 +6,7 @@ extern char workingDirectoryName[512];
 
 int main(int argc, char* argv[])
 {
-	printf ("%s", workingDirectoryName);
+	printf ("%s\n", workingDirectoryName);
 
 	return 0;
 }

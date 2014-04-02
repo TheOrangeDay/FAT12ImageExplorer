@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/ipc.h>
 #include <sys/shm.h>
 #include "common.h"
 #include "fatSupport.h"
@@ -10,12 +9,13 @@ extern char workingDirectoryName[512];
 
 int main(int argc, char* argv[])
 {
+	printf("OKOKOK \n");	
+
 	// parse current working dir, and find location on
 	// fat table
-
 	int shm_ID;
 	void* pointer = NULL;
-	
+
 	char pwd[512];
 
 	char* name;		 // name of the directory
@@ -38,28 +38,32 @@ int main(int argc, char* argv[])
 	int byteOffset = 0;		  // Current calculated byte offset for directories
 	boolean found = false;
 
-	char path[512];// = "course/eccs/eccs46"; //The path we want to navigate to
-	strcpy(path, argv[1]);
-	printf("Path: %s\n", path);
+	char path[512];
+	if(argc > 1)
+	{
+		strcpy(path, argv[1]);
+	}
+	else
+	{
+		path[0] = 0;
+	}
+
 	int pathLength = sizeof(path)/sizeof(*path); // The length of the path
 	int readSize = 0;
 
-	if ((shm_ID = shmget(SHMKEY, SHMSIZE, IPC_CREAT | 0444)) < 0 )
-        {
-                perror("Error getting SHM segment.");
-                exit(-1);
-        }
+	printf("SAY WORD\n");
+	
+	shm_ID = shmget(SHMKEY, SHMSIZE, IPC_CREAT | 0444);
+	pointer = shmat(shm_ID, NULL, 0);
 
-        if ((pointer = shmat(shm_ID, NULL, 0)) == NULL)
-        {
-                perror("Error including SHM address space.");
-                exit(0);
-        }
+	shmStruct* receivedData = (shmStruct*)pointer;
+	strcpy(workingDirectoryName, receivedData->pwd);	
 
-	shmStruct *value = (shmStruct*)pointer;
+	loadFloppyImage(receivedData->floppyName);
 
-	// Temp Load
-	loadFloppyImage(value->floppyName);
+	shmdt(pointer);
+
+	printf("GOT IT\n");
 
 	// set temp location
 	newLocation = (char*) malloc(pathLength * sizeof(char));
@@ -67,36 +71,30 @@ int main(int argc, char* argv[])
 	strcpy(newLocation, path);
 	newLocation[pathLength] = 0;
 
-	// fill in the pwd from parent
-	strcpy(workingDirectoryName, value->pwd);
-	printf("PWD from Main: %s\n", workingDirectoryName);
-
-	// deallocate pointer
-	if (shmdt(pointer) < 0)
-	{
-		perror("Error deallocating shared memory.");
-		exit(-1);
-	}
-
 	// push into new string to avoid editing existing var
-	if(strlen(workingDirectoryName) > 1)
+	if(strlen(path) > 0)
+	{
+		//check if first char of path is '/'
+		if(path[0] == '/')
+		{
+			strcpy(pwd, path);
+		}
+		else
+		{
+			// add extra stuff at the end of the pwd
+			strcpy(pwd, workingDirectoryName);
+			strcat(pwd, "/");
+			strcat(pwd, path);
+		}
+	}
+	else
 	{
 		strcpy(pwd, workingDirectoryName);
 	}
-	else
-	{
-		pwd[0] = 0;
-	}
 
-	if(equal(path, "/"))
-        {
-                workingDirectoryName[1] = 0;
-                workingDirectoryName[0] = '/';
-        }
-	else
-	{
+	printf("NEW PWD: %s\n", pwd);
 
-	// validate correct slashes are used eventually
+	// split the "pwd" to find the byte location in image
 	token = strtok(pwd, "/");
 
 	printf("FirstToken: %s\n", token);
@@ -127,8 +125,6 @@ int main(int argc, char* argv[])
 				continue;
 			}
 
-			printf("Directory is good thus far\n");
-
 			flcBuffer = (char*) malloc(2 * sizeof(char));
 			memset(flcBuffer, 0, strlen(flcBuffer));
 			strncpy(flcBuffer, buffer + byteOffset + 26, 2);
@@ -136,9 +132,7 @@ int main(int argc, char* argv[])
 			mostSignificantBits  = ( ( (int) flcBuffer[1] ) << 8 ) & 0x0000ff00;
 			leastSignificantBits =   ( (int) flcBuffer[0] )        & 0x000000ff;
 			flcNumber = mostSignificantBits | leastSignificantBits;
-		
-			printf("Begin name allocation\n");
-
+	
 			name = (char*) malloc(9 * sizeof(char));
 			memset(name, 0, strlen(name));
 			strncpy(name, buffer + byteOffset, 8);
@@ -150,7 +144,6 @@ int main(int argc, char* argv[])
 			if(equal(name, token))
 			{
 				//Found it! Find the FLC
-				printf("MATCH: FLC: %i\n", flcNumber);
 				lastFLC = flcNumber;
 
 				found = true;
@@ -168,9 +161,7 @@ int main(int argc, char* argv[])
 			if(flc != 4095)
 			{
 				byteLocation = flc + 31;
-
-				printf("Next SECTOR!!\n");
-
+				
 				// skip the token at the end and try again
 				continue;
 			}
@@ -183,26 +174,36 @@ int main(int argc, char* argv[])
 		// get next token
 		token = strtok(NULL, "/");
 	}
-
-	printf("Done. BL = %i\n", byteLocation);
 	
 	if(strlen(newLocation) > 0 && newLocation[0] == '/')
 	{
 		// set back to root
 		byteLocation = 19;
 	}
+	else if (strlen(newLocation) == 0)
+	{
+		newLocation[0] = '/';
+		newLocation[1] = 0;
+		//byteLocation = 19;
+	}
+
+	lastFLC = byteLocation;	
+
+	printf("New location: %s, %i\n", newLocation, byteLocation);
 
 	token = strtok(newLocation, "/");
+	
+	printf("newLocationToekn: %s, %s\n", token, newLocation);
+	boolean isRoot = true;	
 
-
-	while(token != NULL)
+	while(token != NULL || isRoot)
 	{
 		// each sector is 512, containing 16 directory entries (32 bytes long)
 		BYTES_PER_SECTOR = 512;
 		//size it up to 512
 		buffer = (unsigned char*) malloc(BYTES_PER_SECTOR * sizeof(unsigned char));
 		read_sector(byteLocation, buffer);
-		found = false;
+		found = false;		
 
 		for(i = 0; i < maxDirectories; i++)
 		{
@@ -235,50 +236,21 @@ int main(int argc, char* argv[])
 			toLower(name);
 
 			printf("Name: %s\n", name);
-
-			if(equal(name, token))
-			{
-				//Found it! Find the FLC
-				printf("MATCH: FLC: %i\n", flcNumber);
-
-				lastFLC = flcNumber;
-
-				//set new byte location here
-				byteLocation = (flcNumber - 2 + 33);
-
-				found = true;
-
-				if(equal(name, ".."))
-				{
-					char* last = strrchr(pwd, '/');
-					int index = last - pwd;
-					pwd[index] = 0;
-				}
-				else if(!equal(name, "."))
-				{
-					// add to PWD the name
-					strcat(pwd, "/");
-					strcat(pwd, name);
-				}
-				
-				break;
-			}
 		}
 
 		if (found == false)
 		{
 			int flc = get_fat_entry(lastFLC, fatTable);
 			if(flc != 4095)
-			{
+			{		
 				byteLocation = flc + 31;
-
-				printf("Next SECTOR!!\n");
 
 				// skip the token at the end and try again
 				continue;
 			}
 			else
 			{
+				isRoot = false;
 				break;
 			}
 		}
@@ -286,22 +258,6 @@ int main(int argc, char* argv[])
 		// get next token
 		token = strtok(NULL, "/");
 	}
-
-	printf("new dir: %s\n", pwd);
-
-	strcpy(workingDirectoryName, pwd);
-	}
-
-	shm_ID = shmget(SHMKEY, SHMSIZE, IPC_CREAT | 0666);
-	pointer = shmat(shm_ID, NULL, 0);
-
-	shmStruct newStruct;
-	strcpy(newStruct.pwd, workingDirectoryName);
-
-	memset(pointer, 0, 0);
-	memcpy(pointer, &newStruct, sizeof(newStruct));
-
-	shmdt(pointer);
 
 	return 0;
 }

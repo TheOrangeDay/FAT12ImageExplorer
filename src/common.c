@@ -32,7 +32,6 @@ void loadFloppyImage( char* location )
 	if (file == NULL)
 	{
 		printf("Could not open the image.\n");
-		gets(NULL);
 		exit(1);
 	}
 

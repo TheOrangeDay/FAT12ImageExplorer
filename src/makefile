@@ -1,5 +1,5 @@
-CC = gcc
-EXECUTABLE = shell pfe_main pbs_main cd_main pwd_main
+CC = gcc -w
+EXECUTABLE = shell pfe_main pbs_main cd_main pwd_main ls_main
 #Add others when they are made
 
 all: $(EXECUTABLE)
@@ -14,7 +14,11 @@ pbs_main: pbs_main.c
 	$(CC) -o pbs pbs_main.c pbs.c fatSupport.c common.c
 	
 cd_main: cd_main.c
-	$(CC) -g -O -o cd cd_main.c pbs.c fatSupport.c common.c
+	$(CC) -o cd cd_main.c pbs.c fatSupport.c common.c
 
 pwd_main: pwd_main.c
 	$(CC) -o pwd pwd_main.c pbs.c fatSupport.c common.c
+	
+ls_main: ls_main.c
+	$(CC) -o ls ls_main.c pbs.c fatSupport.c common.c
+	
